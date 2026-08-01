@@ -6,9 +6,19 @@ This project was built as a hands-on learning exercise, simulating an ESP32-base
 
 ---
 
-## 📷 Demo
+## 📷 Dashboard Review
 
-> _Add screenshots or a short screen recording here — e.g. the Wokwi simulation running, the dashboard with live charts, and phpMyAdmin showing stored data._
+![Dashboard View](dashboard.jpeg)
+
+> *Real-time dashboard visualizing sensor data (temperature, humidity, water level, and gas levels) fetched via PHP API from the MySQL database.*
+
+---
+
+## 🔌 Wiring Diagram
+
+![Wiring Diagram](wiring.jpeg)
+
+> *Hardware schematic connecting the ESP32 to the DHT22 (Temperature/Humidity), HC-SR04 (Ultrasonic/Water Level), MQ-2 (Gas/Smoke), and an I2C 16x2 LCD.*
 
 ---
 
@@ -32,14 +42,14 @@ flowchart TD
 
 ---
 
-## ✨ Features
+## ✨ Features & Results Achieved
 
-- **Multi-sensor acquisition** — temperature & humidity (DHT22), water level via distance (HC-SR04), gas/smoke detection (MQ-2)
-- **Local display** — rotating 16x2 LCD screens, with a priority alert screen when smoke is detected
-- **Non-blocking sensor loop** using `millis()` instead of `delay()`
-- **MQTT publishing** of sensor readings as JSON, over WiFi
-- **Persistent storage** in MySQL via a Python MQTT subscriber
-- **Live web dashboard** with auto-refreshing stat cards and line charts (Chart.js), including a visual danger indicator when gas levels exceed a safety threshold
+- **Multi-sensor acquisition** — Successfully reading temperature & humidity (DHT22), water level via distance (HC-SR04), and gas/smoke detection (MQ-2).
+- **Local display** — Rotating 16x2 LCD screens implemented, including a priority alert screen triggered when smoke is detected.
+- **Non-blocking sensor loop** — Achieved smooth concurrent operations using `millis()` instead of `delay()`.
+- **MQTT publishing** — Reliable transmission of sensor readings as JSON over WiFi.
+- **Persistent storage** — Automated data logging into MySQL via a custom Python MQTT subscriber.
+- **Live web dashboard** — Fully functional web interface with auto-refreshing stat cards and line charts (Chart.js), complete with visual danger indicators for gas safety thresholds.
 
 ---
 
@@ -60,13 +70,13 @@ flowchart TD
 
 ## 📁 Project Structure
 
-```
+```text
 .
-├── firmware/                 # PlatformIO project (ESP32 code)
+├── firmware/                  # PlatformIO project (ESP32 code)
 │   ├── src/
 │   │   └── main.cpp
 │   ├── platformio.ini
-│   ├── diagram.json          # Wokwi wiring diagram
+│   ├── diagram.json           # Wokwi wiring diagram
 │   └── wokwi.toml
 ├── subscriber/                # MQTT → MySQL bridge
 │   └── subscriber.py
@@ -145,7 +155,7 @@ Keep this running — it listens continuously and writes each incoming reading t
 
 Copy the `dashboard/` folder into your XAMPP `htdocs` directory (e.g. `/opt/lampp/htdocs/iot-dashboard`), then visit:
 
-```
+```text
 http://localhost/iot-dashboard/
 ```
 
@@ -184,24 +194,13 @@ Start components in this order so no data is missed:
 
 ---
 
-## 🗺️ Roadmap
-
-- [ ] Add LoRa/LoRaWAN as an alternative long-range, low-power transport
-- [ ] Explore Zigbee for mesh-based short-range scenarios
-- [ ] Add simple anomaly detection (ML) on stored sensor data
-- [ ] Move from a public broker to a self-hosted Mosquitto instance
-- [ ] Add authentication to the dashboard/API
-
----
-
 ## 📚 What I Learned
 
 Building this project was primarily a way to understand, hands-on, why IoT systems are architected the way they are — in particular:
 
 - The difference between an **application-layer protocol** (MQTT) and a **transport medium** (WiFi, Ethernet, cellular) — MQTT works over any of them.
 - Why devices publish to a **broker** instead of writing directly to a database (resource constraints, connection reliability, security, and decoupling of data producers from consumers).
-- How **LoRa/LoRaWAN** fits into the same conceptual pattern despite operating very differently at the physical layer.
-- Designing a simple but complete **time-series data pipeline**, from sensor to storage to visualization.
+- Designing and implementing a simple but complete **time-series data pipeline**, from sensor acquisition, backend parsing, persistent storage, all the way to frontend visualization.
 
 ---
 
@@ -213,4 +212,6 @@ This project is open source under the [MIT License](LICENSE).
 
 ## 👤 Author
 
-**Your Name** — [GitHub](https://github.com/your-username) · [LinkedIn](https://linkedin.com/in/your-profile)
+**Moh. Ilham Ramadan (Rama)** *Telecommunication Engineering, Politeknik Elektronika Negeri Surabaya (PENS)* Embedded Systems, IoT & Machine Learning Enthusiast
+
+- GitHub: [@ramailham23](https://github.com/ramailham23)
