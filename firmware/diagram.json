@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "author": "MohIlhamRamadan XIIA721",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-breadboard-mini",
+      "id": "bb1",
+      "top": 317.7,
+      "left": 89.9,
+      "rotate": 90,
+      "attrs": {}
+    },
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 115.2, "left": -52.76, "attrs": {} },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd1",
+      "top": 256,
+      "left": 293.6,
+      "attrs": { "pins": "i2c" }
+    },
+    { "type": "wokwi-hc-sr04", "id": "ultrasonic1", "top": 231.9, "left": -282.5, "attrs": {} },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 41.1, "left": -213.8, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -9.3, "left": 225, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:GND.3", "bb1:1b.j", "black", [ "h38.4", "v0", "h28.8" ] ],
+    [ "lcd1:GND", "bb1:1b.i", "black", [ "h0" ] ],
+    [ "dht1:GND", "bb1:1b.h", "black", [ "v134.4", "h-124.8" ] ],
+    [ "gas1:GND", "bb1:1b.g", "black", [ "h0" ] ],
+    [ "ultrasonic1:GND", "bb1:1b.f", "black", [ "v9.6", "h277.2", "v-67.2", "h67.2" ] ],
+    [ "esp:5V", "bb1:7b.j", "red", [ "h-28.65", "v48" ] ],
+    [ "ultrasonic1:VCC", "bb1:7b.i", "red", [ "v28.8", "h316.8" ] ],
+    [ "gas1:VCC", "bb1:7b.h", "red", [ "h0" ] ],
+    [ "dht1:VCC", "bb1:7b.g", "red", [ "v86.4", "h-67.2", "v153.6", "h-76.8" ] ],
+    [ "lcd1:VCC", "bb1:7b.f", "red", [ "h-28.8", "v57.7" ] ],
+    [ "lcd1:SDA", "esp:21", "green", [ "h-48", "v-86.2", "h-153.6", "v-28.8" ] ],
+    [ "lcd1:SCL", "esp:22", "green", [ "h-9.6", "v-153.3" ] ],
+    [ "dht1:SDA", "esp:4", "yellow", [ "v19.2", "h-47.9", "v134.4" ] ],
+    [ "ultrasonic1:TRIG", "esp:5", "cyan", [ "v76.8", "h278", "v-172.8" ] ],
+    [ "ultrasonic1:ECHO", "esp:18", "cyan", [ "v57.6", "h277.6", "v-163.2" ] ],
+    [ "gas1:AOUT", "esp:34", "violet", [ "h9.6", "v124.8" ] ]
+  ],
+  "dependencies": {}
+}
