@@ -16,7 +16,7 @@ This project was built as a hands-on learning exercise, simulating an ESP32-base
 
 ## 🔌 Wiring Diagram
 
-![Wiring Diagram](wiring.jpeg)
+![Wiring Diagram](Wiring.jpeg)
 
 > *Hardware schematic connecting the ESP32 to the DHT22 (Temperature/Humidity), HC-SR04 (Ultrasonic/Water Level), MQ-2 (Gas/Smoke), and an I2C 16x2 LCD.*
 
