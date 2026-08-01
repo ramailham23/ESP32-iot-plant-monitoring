@@ -8,7 +8,7 @@ This project was built as a hands-on learning exercise, simulating an ESP32-base
 
 ## 📷 Dashboard Review
 
-![Dashboard View](dashboard.jpeg)
+![Dashboard View](Dashboard.jpeg)
 
 > *Real-time dashboard visualizing sensor data (temperature, humidity, water level, and gas levels) fetched via PHP API from the MySQL database.*
 
