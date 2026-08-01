@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Monitoring IoT</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; margin: 0; padding: 20px; }
+  h1 { text-align: center; }
+  .cards { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
+  .card { background: #16213e; padding: 20px; border-radius: 10px; min-width: 160px; text-align: center; }
+  .card .value { font-size: 28px; font-weight: bold; margin-top: 8px; }
+  .card.danger { background: #4a1024; border: 1px solid #ff4d4d; }
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 0 auto; }
+  .chart-box { background: #16213e; padding: 15px; border-radius: 10px; }
+  .status { text-align: center; margin-bottom: 10px; color: #8f8f8f; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>🌱 Dashboard Monitoring Tanaman ESP32</h1>
+<div class="status" id="status">Memuat data...</div>
+
+<div class="cards">
+  <div class="card"><div>Suhu</div><div class="value" id="val-suhu">--</div></div>
+  <div class="card"><div>Kelembapan</div><div class="value" id="val-kelembapan">--</div></div>
+  <div class="card"><div>Jarak Air</div><div class="value" id="val-jarak">--</div></div>
+  <div class="card" id="card-gas"><div>Gas</div><div class="value" id="val-gas">--</div></div>
+</div>
+
+<div class="charts">
+  <div class="chart-box"><canvas id="chartSuhu"></canvas></div>
+  <div class="chart-box"><canvas id="chartKelembapan"></canvas></div>
+  <div class="chart-box"><canvas id="chartJarak"></canvas></div>
+  <div class="chart-box"><canvas id="chartGas"></canvas></div>
+</div>
+
+<script>
+const ctxOpts = {
+  responsive: true,
+  animation: false,
+  scales: { x: { ticks: { color: '#aaa' } }, y: { ticks: { color: '#aaa' } } },
+  plugins: { legend: { labels: { color: '#eee' } } }
+};
+
+function makeChart(ctxId, label, color) {
+  return new Chart(document.getElementById(ctxId), {
+    type: 'line',
+    data: { labels: [], datasets: [{ label: label, data: [], borderColor: color, tension: 0.3 }] },
+    options: ctxOpts
+  });
+}
+
+const chartSuhu = makeChart('chartSuhu', 'Suhu (°C)', '#ff6b6b');
+const chartKelembapan = makeChart('chartKelembapan', 'Kelembapan (%)', '#4dabf7');
+const chartJarak = makeChart('chartJarak', 'Jarak Air (cm)', '#69db7c');
+const chartGas = makeChart('chartGas', 'Gas (analog)', '#ffd43b');
+
+async function fetchData() {
+  try {
+    const res = await fetch('api.php?limit=20');
+    const data = await res.json();
+
+    if (data.length === 0) {
+      document.getElementById('status').innerText = 'Belum ada data masuk';
+      return;
+    }
+
+    const labels = data.map(d => d.waktu.split(' ')[1]);
+    const suhu = data.map(d => parseFloat(d.suhu));
+    const kelembapan = data.map(d => parseFloat(d.kelembapan));
+    const jarak = data.map(d => parseFloat(d.jarak_air));
+    const gas = data.map(d => parseInt(d.gas_value));
+
+    updateChart(chartSuhu, labels, suhu);
+    updateChart(chartKelembapan, labels, kelembapan);
+    updateChart(chartJarak, labels, jarak);
+    updateChart(chartGas, labels, gas);
+
+    const latest = data[data.length - 1];
+    document.getElementById('val-suhu').innerText = latest.suhu + ' °C';
+    document.getElementById('val-kelembapan').innerText = latest.kelembapan + ' %';
+    document.getElementById('val-jarak').innerText = latest.jarak_air + ' cm';
+    document.getElementById('val-gas').innerText = latest.gas_value;
+
+    const gasCard = document.getElementById('card-gas');
+    if (parseInt(latest.gas_value) > 2000) {
+      gasCard.classList.add('danger');
+    } else {
+      gasCard.classList.remove('danger');
+    }
+
+    document.getElementById('status').innerText = 'Update terakhir: ' + latest.waktu;
+  } catch (err) {
+    document.getElementById('status').innerText = 'Gagal ambil data: ' + err;
+  }
+}
+
+function updateChart(chart, labels, values) {
+  chart.data.labels = labels;
+  chart.data.datasets[0].data = values;
+  chart.update();
+}
+
+fetchData();
+setInterval(fetchData, 3000);
+</script>
+
+</body>
+</html>
